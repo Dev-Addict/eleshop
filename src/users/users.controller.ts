@@ -9,6 +9,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UserDocument } from './schemas/user.schema';
+import { DocumentsResponse } from '../interfaces/documents-response.interface';
+import { DocumentResponse } from '../interfaces/document-response.interface';
 
 @Controller('users')
 export class UsersController {
@@ -20,8 +22,13 @@ export class UsersController {
     @Query('sort') sort?: string,
     @Query('page') page?: number,
     @Query('limit') limit?: number
-  ) {
-    return this.usersService.findUsers(filter, page, limit, sort);
+  ): Promise<DocumentsResponse<UserDocument>> {
+    return {
+      status: 'success',
+      data: {
+        docs: await this.usersService.findUsers(filter, page, limit, sort)
+      }
+    };
   }
 
   @Post('')
@@ -29,15 +36,25 @@ export class UsersController {
   @UseGuards(ProtectGuard, RolesGuard)
   async createOne(
     @Body() createUserDto: CreateUserDto
-  ) {
-    return this.usersService.createUser(createUserDto);
+  ): Promise<DocumentResponse<UserDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.usersService.createUser(createUserDto)
+      }
+    };
   }
 
   @Get(':id')
   async getOne(
     @Param('id') id: string
-  ) {
-    return this.usersService.findUser({_id: id});
+  ): Promise<DocumentResponse<UserDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.usersService.findUser({_id: id})
+      }
+    };
   }
 
   @Patch(':id')
@@ -46,8 +63,13 @@ export class UsersController {
   async updateOne(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto
-  ) {
-    return this.usersService.updateUser(id, updateUserDto);
+  ): Promise<DocumentResponse<UserDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.usersService.updateUser(id, updateUserDto)
+      }
+    };
   }
 
   @Delete(':id')
@@ -55,7 +77,12 @@ export class UsersController {
   @UseGuards(ProtectGuard, RolesGuard)
   async deleteOne(
     @Param('id') id: string,
-  ) {
-    return this.usersService.deleteUser(id);
+  ): Promise<DocumentResponse<UserDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.usersService.deleteUser(id)
+      }
+    };
   }
 }
