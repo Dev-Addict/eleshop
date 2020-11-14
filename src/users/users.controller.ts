@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 
 import { UsersService } from './users.service';
@@ -7,6 +7,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { ProtectGuard } from '../auth/guards/protect.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user-dto';
 import { UserDocument } from './schemas/user.schema';
 
 @Controller('users')
@@ -32,10 +33,18 @@ export class UsersController {
     return this.usersService.createUser(createUserDto);
   }
 
-  @Get('/:id')
+  @Get(':id')
   async getOne(
     @Param('id') id: string
   ) {
     return this.usersService.findUser({_id: id});
+  }
+
+  @Patch(':id')
+  async updateOne(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
+    return this.usersService.updateUser(id, updateUserDto);
   }
 }
