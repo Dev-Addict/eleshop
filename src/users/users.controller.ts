@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 
 import { UsersService } from './users.service';
@@ -30,5 +30,12 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto
   ) {
     return this.usersService.createUser(createUserDto);
+  }
+
+  @Get('/:id')
+  async getOne(
+    @Param('id') id: string
+  ) {
+    return this.usersService.findUser({_id: id});
   }
 }
