@@ -2,7 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { compare, hash } from 'bcrypt';
 
-export type UserDocument = User & Document;
+export type UserDocument = User & Document & {
+  correctPassword(candidatePassword: string, userPassword: string): Promise<boolean>,
+  isPasswordChanged(JWTTimeStamp: number): boolean
+};
 
 export enum Rote {
   USER = 'user',
@@ -15,7 +18,7 @@ export class User {
     type: String,
     required: [true, '0xE000000'],
     validate: {
-      validator: value => /^([\u0600-\u06FF]{2,}\s+)+$/.test(value),
+      validator: value => /^([\u0600-\u06FF]{2,}\s?)+$/.test(value),
       message: '0xE000001'
     }
   })
@@ -25,7 +28,7 @@ export class User {
     type: String,
     required: [true, '0xE000002'],
     validate: {
-      validator: value => /^([\u0600-\u06FF]{2,}\s+)+$/.test(value),
+      validator: value => /^([\u0600-\u06FF]{2,}\s?)+$/.test(value),
       message: '0xE000003'
     }
   })

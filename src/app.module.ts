@@ -3,7 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 
 import { UsersModule } from './users/users.module';
-import { User, UserSchema } from './users/schemas/user.schema';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,13 +15,8 @@ import { User, UserSchema } from './users/schemas/user.schema';
         .replace('<password>', process.env.DATABASE_PASSWORD)
         .replace('<dbname>', process.env.DATABASE_NAME)
     ),
-    MongooseModule.forFeature([
-      {
-        name: User.name,
-        schema: UserSchema
-      }
-    ]),
-    UsersModule
+    UsersModule,
+    AuthModule
   ]
 })
 export class AppModule {}
