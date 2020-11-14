@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { FilterQuery } from 'mongoose';
 
 import { UsersService } from './users.service';
@@ -48,5 +48,14 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto
   ) {
     return this.usersService.updateUser(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @Roles('admin', 'selfUser')
+  @UseGuards(ProtectGuard, RolesGuard)
+  async deleteOne(
+    @Param('id') id: string,
+  ) {
+    return this.usersService.deleteUser(id);
   }
 }
