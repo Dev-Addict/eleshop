@@ -10,7 +10,7 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
   }
 
-  async findUser(query: FilterQuery<UserDocument>, select: string): Promise<UserDocument> {
+  async findUser(query: FilterQuery<UserDocument>, select?: string): Promise<UserDocument> {
     return this.userModel.findOne(query).select(select);
   }
 
