@@ -41,6 +41,8 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @Roles('admin', 'selfUser')
+  @UseGuards(ProtectGuard, RolesGuard)
   async updateOne(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto
