@@ -7,15 +7,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
-  }
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async findUser(query: FilterQuery<UserDocument>, select?: string): Promise<UserDocument> {
     return this.userModel.findOne(query).select(select);
   }
 
-  async findUsers(query: FilterQuery<UserDocument>): Promise<UserDocument[]> {
-    return this.userModel.find(query);
+  async findUsers(query: FilterQuery<UserDocument>, page= 1, limit = 20, sort = '-createdAt'): Promise<UserDocument[]> {
+    return this.userModel.find(query).skip((page - 1) * limit).limit(limit).sort(sort);
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
