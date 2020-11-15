@@ -18,6 +18,10 @@ export class UsersService {
     return this.userModel.find(query).skip((page - 1) * limit).limit(limit).sort(sort);
   }
 
+  async getLength(query?: FilterQuery<UserDocument>): Promise<number> {
+    return this.userModel.countDocuments(query);
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<UserDocument> {
     return this.userModel.create(<CreateQuery<UserDocument>>createUserDto);
   }

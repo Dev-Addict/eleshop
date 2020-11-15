@@ -25,6 +25,7 @@ export class UsersController {
   ): Promise<DocumentsResponse<UserDocument>> {
     return {
       status: 'success',
+      length: await this.usersService.getLength(filter),
       data: {
         docs: await this.usersService.findUsers(filter, page, limit, sort)
       }
