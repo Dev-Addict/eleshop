@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { CreateQuery, FilterQuery, Model } from 'mongoose';
 
 import { Category, CategoryDocument } from './schemas/category.schema';
+import { CreateCategoryDto } from './dto/CreateCategoryDto';
 
 @Injectable()
 export class CategoriesService {
@@ -14,5 +15,9 @@ export class CategoriesService {
 
   async getLength(query: FilterQuery<CategoryDocument>): Promise<number> {
     return this.categoryModel.countDocuments(query);
+  }
+
+  async createCategory(createCategoryDto: CreateCategoryDto): Promise<CategoryDocument> {
+    return this.categoryModel.create(<CreateQuery<CategoryDocument>>createCategoryDto);
   }
 }
