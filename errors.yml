@@ -10,3 +10,4 @@
 0xE000009: 'user `password` is invalid'
 0xE00000A: 'user `rote` is invalid'
 0xE00000B: 'invalid `email` or `password`'
+0xE00000C: 'user `title` is required'

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { AuthModule } from './auth/auth.module';
         .replace('<dbname>', process.env.DATABASE_NAME)
     ),
     UsersModule,
-    AuthModule
+    AuthModule,
+    CategoriesModule
   ]
 })
 export class AppModule {}
