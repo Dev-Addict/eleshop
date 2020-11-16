@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { FilterQuery } from "mongoose";
 
 import { CategoriesService } from './categories.service';
@@ -43,5 +43,17 @@ export class CategoriesController {
         doc: await this.categoriesService.createCategory(createCategoryDto)
       }
     };
+  }
+
+  @Get(':id')
+  async getOne(
+    @Param('id') id: string
+  ): Promise<DocumentResponse<CategoryDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.categoriesService.findCategory({_id: id})
+      }
+    }
   }
 }

@@ -20,4 +20,8 @@ export class CategoriesService {
   async createCategory(createCategoryDto: CreateCategoryDto): Promise<CategoryDocument> {
     return this.categoryModel.create(<CreateQuery<CategoryDocument>>createCategoryDto);
   }
+
+  async findCategory(query: FilterQuery<CategoryDocument>): Promise<CategoryDocument> {
+    return this.categoryModel.findOne(query);
+  }
 }
