@@ -4,6 +4,7 @@ import { CreateQuery, FilterQuery, Model } from 'mongoose';
 
 import { Category, CategoryDocument } from './schemas/category.schema';
 import { CreateCategoryDto } from './dto/CreateCategoryDto';
+import { UpdateCategoryDto } from './dto/UpdateCategoryDto';
 
 @Injectable()
 export class CategoriesService {
@@ -23,5 +24,9 @@ export class CategoriesService {
 
   async findCategory(query: FilterQuery<CategoryDocument>): Promise<CategoryDocument> {
     return this.categoryModel.findOne(query);
+  }
+
+  async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto): Promise<CategoryDocument> {
+    return this.categoryModel.findByIdAndUpdate(id, updateCategoryDto);
   }
 }

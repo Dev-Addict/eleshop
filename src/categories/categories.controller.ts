@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { FilterQuery } from "mongoose";
 
 import { CategoriesService } from './categories.service';
@@ -10,6 +10,7 @@ import { CreateCategoryDto } from './dto/CreateCategoryDto';
 import { CategoryDocument } from './schemas/category.schema';
 import { DocumentsResponse } from '../interfaces/documents-response.interface';
 import { DocumentResponse } from '../interfaces/document-response.interface';
+import { UpdateCategoryDto } from './dto/UpdateCategoryDto';
 
 @Controller('categories')
 export class CategoriesController {
@@ -53,6 +54,21 @@ export class CategoriesController {
       status: 'success',
       data: {
         doc: await this.categoriesService.findCategory({_id: id})
+      }
+    }
+  }
+
+  @Patch(':id')
+  @Roles('admin')
+  @UseGuards(ProtectGuard, RolesGuard)
+  async updateOne(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto
+  ): Promise<DocumentResponse<CategoryDocument>> {
+    return {
+      status: 'success',
+      data: {
+        doc: await this.categoriesService.updateCategory(id, updateCategoryDto)
       }
     }
   }
